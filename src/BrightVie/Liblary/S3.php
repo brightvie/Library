@@ -2,7 +2,7 @@
 namespace BrightVie\Liblary;
 
 // Load Composer Vendor Modules
-require_once('vendor/autoload.php');
+//require_once('vendor/autoload.php');
 
 /*
  * $s3 = new S3();
