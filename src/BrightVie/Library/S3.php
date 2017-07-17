@@ -4,10 +4,22 @@ namespace BrightVie\Library;
 // Load Composer Vendor Modules
 //require_once('vendor/autoload.php');
 
-/*
- * $s3 = new S3();
- * $objUrl = $s3->putObject('フルパスでディレクトリ指定', 'ファイル名');
- * var_dump($objUrl);
+/**
+ *
+ * ```
+ * $systemName = 'defaults';
+ *
+ * // constructにシステム名を入れることで、
+ * // システム毎にフォルダを分離することを目的とする
+ * $libS3 = new BrightVie\Library\S3($systemName);
+ *
+ * // 下記のファイルをアップロードする場合
+ * //  /tmp/upload-file/defaults/20170717/スタッフ情報_15003012511168.csv
+ * $dir  = '/tmp/upload-file/defaults/20170717';
+ * $file = 'スタッフ情報_15003012511168.csv';
+ *
+ * $objUrl = $libS3->putObject($dir, $file);
+ * echo $objUrl;
  */
 
 class S3
