@@ -1,5 +1,5 @@
 <?php
-namespace BrightVie\Liblary;
+namespace BrightVie\Library;
 
 // Load Composer Vendor Modules
 //require_once('vendor/autoload.php');

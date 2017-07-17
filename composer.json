@@ -1,5 +1,5 @@
 {
-    "name": "brightvie/liblary",
+    "name": "brightvie/Library",
     "description": "brightvie utility Library",
     "keywords": ["brightvie", "utility"],
     "type": "library",
@@ -19,7 +19,7 @@
     },
     "autoload": {
       "psr-0": {
-        "BrightVie\\Liblary": "src/"
+        "BrightVie\\Library": "src/"
       }
     }
 }
