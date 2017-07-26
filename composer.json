@@ -12,7 +12,8 @@
       }
     ],
     "require": {
-      "aws/aws-sdk-php": "*"
+      "aws/aws-sdk-php": "*",
+        "twilio/sdk": "^5.12"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*"
