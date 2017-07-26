@@ -33,7 +33,7 @@ class Twilio {
      * 1つの電話番号に対して同じSMSを送る
      */
     public function sendSMS($sendNumber, $sendMessage) {
-        $res = $client->messages->create(
+        $res = $this->client->messages->create(
             $sendNumber,
             array(
                 'from' => $this->fromPhoneNumber,
