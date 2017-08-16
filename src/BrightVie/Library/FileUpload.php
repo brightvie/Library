@@ -148,7 +148,43 @@ class FileUpload {
       $this->errorMessage = 'tmpフォルダからアップロード先へのコピーに失敗しました。ディレクトリの存在有無や権限に問題ないか確認してください。';
       return false;
     }
+  }
 
+  /**
+   * Base64エンコードされた画像ファイルのアップロード処理
+   * falseが返った場合のエラー内容はgetErrorMessageにて取得する
+   *
+   * 成功した場合は、アップロードしたファイルのパスを返す
+   */
+  public function uploadBase64Image($fileName, $base64Image)
+  {
+    $uploadDir = $this->_getUploadDir();
+
+    if (!$this->_createDir($uploadDir)) {
+      $this->errorMessage = 'アップロード先のディレクトリ作成に失敗しました。パスや権限を再度確認してください。';
+      return false;
+    }
+
+    // アップロード先を指定
+    $uploadPath = $uploadDir . '/' . $this->_getUploadFileName($fileName);
+
+    //POSTデーターの中にbase64で送られるのでPHPがデコードできるように修正
+    $from_arr = array( " " , "data:image/png;base64," , "data:image/jpg;base64," , "data:image/jpeg;base64," , "data:image/gif;base64," );
+    $to_arr   = array( "+" , "" , "" , "" , "" );
+    //base64からバイナリ画像に変換
+    $fileData    = base64_decode( str_replace( $from_arr , $to_arr , $base64Image ) );
+
+
+    // 保存
+    if(file_put_contents($uploadPath, $fileData)) {
+
+      return $uploadPath;
+
+    } else {
+      //コピーに失敗（だいたい、ディレクトリがないか、パーミッションエラー）
+      $this->errorMessage = 'Base64画像からファイルの書き出しに失敗しました。ディレクトリの存在有無や権限に問題ないか確認してください。';
+      return false;
+    }
   }
 
   public function getErrorMessage() {
