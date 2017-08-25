@@ -5,6 +5,15 @@ namespace BrightVie\Library;
 //require_once('vendor/autoload.php');
 
 /**
+ * AWS のアカウント設定方法
+ * ```
+ * $ cat /etc/aws/credentials.ini
+ * [default]
+ * aws_access_key_id=アクセス気０
+ * aws_secret_access_key=シークレットキー
+ * ```
+ *  ※ 上記のようなファイル設定が必要になります。
+ *
  *
  * ```
  * $systemName = 'defaults';
