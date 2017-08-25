@@ -81,7 +81,9 @@ class S3
     $result = $this->s3->putObject(array(
         'Bucket' => $this->bucketName,
         'Key'    => $s3Path,
-        'Body'   => fopen($uploadFileDir.'/'.$uploadFileName, 'r')
+        'Body'   => fopen($uploadFileDir.'/'.$uploadFileName, 'r'),
+        // 基本的に公開オプションとしておく
+        'ACL'    => 'public-read',
     ));
 
     return $result['ObjectURL'];
