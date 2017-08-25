@@ -36,14 +36,22 @@ class S3
    *
    * 基本的には、s3://upload-file/{systemName}/{年月日}/ファイル名.php としておく
    */
-  function __construct($systemName = 'defaults') {
+  function __construct($systemName = 'defaults', $options = []) {
 
     $this->systemName = $systemName;
     $region = (getenv('AWS_DEFAULT_REGION'))?getenv('AWS_DEFAULT_REGION'):'ap-northeast-1';
 
+    $ini = '/etc/aws/credentials.ini';
+    if (isset($options['credential_path'])) {
+      $ini = $options['credential_path'];
+    }
+    $iniProvider = \Aws\Credentials\CredentialProvider::ini(null, $ini);
+    $iniProvider = \Aws\Credentials\CredentialProvider::memoize($iniProvider);
+
     $this->s3 = \Aws\S3\S3Client::factory(array(
       'version' => '2006-03-01',
       'region'  => $region,
+      'credentials' => $iniProvider
 //        'key'    => getenv('AWS_ACCESS_KEY_ID'),
 //        'secret' => getenv('AWS_SECRET_ACCESS_KEY'),
 //        'region' => getenv('AWS_DEFAULT_REGION'),
