@@ -196,7 +196,7 @@ class FileUpload {
     }
 
     // ファイル名に拡張子がなければbase64Imageから拡張子を取得する
-    $info = new SplFileInfo($fileName);
+    $info = new \SplFileInfo($fileName);
     if (!$info->getExtension()) {
       // 拡張子判定処理
       $img_extension = $this->getBase64ImageExtension($base64Image);
