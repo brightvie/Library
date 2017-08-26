@@ -150,6 +150,36 @@ class FileUpload {
     }
   }
 
+  public function getBase64ImageExtension($base64Image) {
+    $img_extension = '';
+
+    //getimagesize関数で画像情報を取得する
+    try {
+      list($img_width, $img_height, $mime_type, $attr) = getimagesize($base64Image);
+    } catch (Exception $e) {
+      return "";
+    }
+
+    //list関数の第3引数にはgetimagesize関数で取得した画像のMIMEタイプが格納されているので条件分岐で拡張子を決定する
+    switch($mime_type){
+        case IMG_JPEG:
+        case IMAGETYPE_JPEG:
+            $img_extension = "jpg";
+            break;
+        case IMAGETYPE_PNG:
+            $img_extension = "png";
+            break;
+        case IMAGETYPE_GIF:
+            $img_extension = "gif";
+            break;
+        case IMAGETYPE_BMP:
+            $img_extension = "bmp";
+            break;
+    }
+    return $img_extension;
+  }
+
+
   /**
    * Base64エンコードされた画像ファイルのアップロード処理
    * falseが返った場合のエラー内容はgetErrorMessageにて取得する
@@ -164,6 +194,17 @@ class FileUpload {
       $this->errorMessage = 'アップロード先のディレクトリ作成に失敗しました。パスや権限を再度確認してください。';
       return false;
     }
+
+    // ファイル名に拡張子がなければbase64Imageから拡張子を取得する
+    $info = new SplFileInfo($fileName);
+    if (!$info->getExtension()) {
+      // 拡張子判定処理
+      $img_extension = $this->getBase64ImageExtension($base64Image);
+      if (!empty($img_extension)) {
+        $fileName = $fileName . '.' . $img_extension;
+      }
+    }
+
 
     // アップロード先を指定
     $uploadPath = $uploadDir . '/' . $this->_getUploadFileName($fileName);
