@@ -16,6 +16,8 @@ if (!isset($_POST['upfile']) || empty($_POST['upfile'])) {
 }
 
 // ライブラリを呼び出す
+//$libFile = new \BrightVie\Library\FileUpload();
+require '../../../src/BrightVie/Library/FileUpload.php';
 $libFile = new \BrightVie\Library\FileUpload();
 
 // ファイルをサーバにアップロードする

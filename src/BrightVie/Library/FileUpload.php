@@ -215,12 +215,32 @@ class FileUpload {
     //base64からバイナリ画像に変換
     $fileData    = base64_decode( str_replace( $from_arr , $to_arr , $base64Image ) );
 
+    // iPhoneのWebでHTMLのフォームなどから写真をアップロードすると
+    // ExifのOrientationの値が「1」以外になっている場合、画像が回転して表示されてしまう問題がある
+    // そのため、アップロードされたタイミングで、ExifのOrientationを見て、サーバー側で画像を回転させて保存しておく
+    $imagick = new \Imagick();
+    $imagick->readimageblob($fileData);
 
-    // 保存
-    if(file_put_contents($uploadPath, $fileData)) {
+    $orientation = $imagick->getImageOrientation();
+    $isRotated = false;
+    if ($orientation === \Imagick::ORIENTATION_RIGHTTOP) {
+        $imagick->rotateImage('none', 90);
+        $isRotated = true;
+    } elseif ($orientation === \Imagick::ORIENTATION_BOTTOMRIGHT) {
+        $imagick->rotateImage('none', 180);
+        $isRotated = true;
+    } elseif ($orientation === \Imagick::ORIENTATION_LEFTBOTTOM) {
+        $imagick->rotateImage('none', 270);
+        $isRotated = true;
+    } 
+    if ($isRotated) { 
+        $imagick->setImageOrientation(\Imagick::ORIENTATION_TOPLEFT);
+    } 
 
-      return $uploadPath;
-
+    $result = $imagick->writeImage($uploadPath);
+    $imagick->clear();
+    if ($result) {
+      return $uploadPath;      
     } else {
       //コピーに失敗（だいたい、ディレクトリがないか、パーミッションエラー）
       $this->errorMessage = 'Base64画像からファイルの書き出しに失敗しました。ディレクトリの存在有無や権限に問題ないか確認してください。';
